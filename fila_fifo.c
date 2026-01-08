@@ -83,12 +83,72 @@ int f_obter_proxima_chave(Fila_FIFO **f){
 int f_consultar_proxima_chave(Fila_FIFO **f){
     if (f == NULL || *f == NULL) return 0;
 
-    if ((*f)->inicio == NULL) {
+    if ((*f)->inicio == NULL) { // So pra verificar se não ta vazia basicao
         printf ("Fila vazia. Nao ha proxima chave para consultar.\n");
         return -1; // Fila vazia
 
     }
 
-    return (*f)->inicio->numero_conta;
+    return (*f)->inicio->numero_conta; // Retorna o valor da chave do elemento e nao retira
+}
+
+int f_consultar_proximo_valor(Fila_FIFO **f){
+    if (f == NULL || *f == NULL) return 0;
+    if ((*f)->inicio == NULL) { //Mesmo jeito da consultar_proxima_chave
+        printf ("Fila vazia. Nao ha proxima chave para obter.\n");
+        return -1; // Fila vazia
+    }
+
+    return (*f)->inicio->Quantidade_operacao; // Retorna o valor armazenado no elemento
+}
+
+int f_num_elementos (Fila_FIFO **f){
+    if (f == NULL || *f == NULL) {
+        return 0;
+    }
+    return (*f)->qtde;  // Retorna a quantidade de pessoas que esta na fila
+
+}
+
+int f_consultar_chave_por_posicao (Fila_FIFO **f, int posicao){
+    No *var_temp_para_percorer_obrabo_do_vetor = (*f)->inicio; // Variavel temporaria para receber o valor do ponteiro principal
+    int contador = 0; //Contador basicao
+    
+    if (f == NULL || *f == NULL) { //So verificação para ve se nao esta vazio
+        return 0;
+    }
+
+    while (var_temp_para_percorer_obrabo_do_vetor != NULL){ // Percorre ate o fim da fila no pior caso claro
+        if (contador == posicao){ // Se o contador tem o valor da posicao retorna o numero
+            return var_temp_para_percorer_obrabo_do_vetor->numero_conta;
+        }
+
+        var_temp_para_percorer_obrabo_do_vetor = var_temp_para_percorer_obrabo_do_vetor->prox;
+        contador++; //Vai so inclementando o valor do contador pra ir percorrendo a lista toda baseado no valor dele
+
+    }
+    printf("Posicao %d fora de alcance.\n", posicao);
+    return -1;
+}
+
+int f_consultar_valor_por_posicao (Fila_FIFO **f, int posicao){
+    No *var_temp_para_percorer_obrabo_do_vetor2 = (*f)->inicio;
+    int contador = 0;
+    
+    if (f == NULL || *f == NULL) {
+        return 0;
+    }
+
+    while (var_temp_para_percorer_obrabo_do_vetor2 != NULL){
+        if (contador == posicao){
+            return var_temp_para_percorer_obrabo_do_vetor2->Quantidade_operacao;
+        }
+
+        var_temp_para_percorer_obrabo_do_vetor2 = var_temp_para_percorer_obrabo_do_vetor2->prox;
+        contador++;
+    }
+    printf("Posicao %d fora de alcance.\n", posicao);
+    return -1;
+
 }
 
