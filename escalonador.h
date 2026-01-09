@@ -13,6 +13,7 @@ typedef struct {
     int fila_atual_idx;
     int qtd_atendida_na_rodada;
     int tempo_global;
+    Log *log_global;
 } Escalonador;
 
 void e_inicializar(Escalonador *e, int caixas, int delta_t, int n_1, int n_2, int n_3, int n_4, int n_5);

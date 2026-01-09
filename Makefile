@@ -1,28 +1,38 @@
-# Exemplo de Makefile
+# Compilador e Flags
 CC = gcc
-CFLAGS = -Wall -Wextra -g # Flags de aviso e debug
-OBJ = main.o fila_fifo.o logtree.o escalonador.o
+CFLAGS = -Wall -Wextra -g
 
-# Regra principal
-all: simulador
+# Nome da pasta de saída
+ODIR = Compilados
 
-# Ligação (Linking)
-simulador: $(OBJ)
-	$(CC) $(CFLAGS) -o simulador $(OBJ)
+# Lista de Headers (Dependências)
+# Se mudar qualquer .h, ele recompila tudo para garantir segurança
+DEPS = fila_fifo.h logtree.h escalonador.h
 
-# Compilação dos objetos
-main.o: main.c escalonador.h
-	$(CC) $(CFLAGS) -c main.c
+# Lista de Objetos com o caminho da pasta
+# Isso diz: main.o vira Compilados/main.o, etc.
+_OBJ = main.o fila_fifo.o logtree.o escalonador.o
+OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-fila_fifo.o: fila_fifo.c fila_fifo.h
-	$(CC) $(CFLAGS) -c fila_fifo.c
+# Regra Principal (Default)
+all: create_dir $(ODIR)/simulador
 
-logtree.o: logtree.c logtree.h
-	$(CC) $(CFLAGS) -c logtree.c
+# Regra para criar a pasta se ela não existir (-p evita erro se já existir)
+create_dir:
+	@mkdir -p $(ODIR)
 
-escalonador.o: escalonador.c escalonador.h fila_fifo.h logtree.h
-	$(CC) $(CFLAGS) -c escalonador.c
+# Regra de Linkagem (Gera o executável final DENTRO da pasta)
+# $@ significa o alvo (Compilados/simulador)
+# $^ significa todas as dependências (os .o)
+$(ODIR)/simulador: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Limpeza
+# Regra de Compilação Genérica
+# Transforma qualquer .c da raiz em um .o dentro da pasta Compilados
+# $< significa o arquivo .c de origem
+$(ODIR)/%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Limpeza (Apaga a pasta inteira)
 clean:
-	rm -f *.o simulador
+	rm -rf $(ODIR)
