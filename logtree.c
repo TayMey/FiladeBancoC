@@ -5,25 +5,22 @@ void log_inicializar(Log **l) { //função para criar arvóre binária
     *l = NULL;
 }
 
-void log_registrar( //função para registrar
-    Log **l,
-    int conta,
-    int classe,
-    int tempo,
-    int caixa
-) {
-    Log *novo = malloc(sizeof(Log));
-    if (novo == NULL)
-        return;
-
-    novo->conta  = conta;
-    novo->classe = classe;
-    novo->tempo  = tempo;
-    novo->caixa  = caixa;
-    novo->esq = NULL;
-    novo->dir = NULL;
-
-    inserir_no(l, novo);
+void log_registrar(Log **l, int conta, int classe, int timer, int caixa) {
+    if (*l == NULL) {
+        *l = (Log*) malloc(sizeof(Log));
+        (*l)->conta_id = conta;    // Nome exato do .h
+        (*l)->classe_id = classe;  // Nome exato do .h
+        (*l)->tempo_id = timer;    // Nome exato do .h
+        (*l)->caixa_id = caixa;    // Nome exato do .h
+        (*l)->esq = NULL;
+        (*l)->dir = NULL;
+    } else {
+        if (conta < (*l)->conta_id) {
+            log_registrar(&((*l)->esq), conta, classe, timer, caixa);
+        } else {
+            log_registrar(&((*l)->dir), conta, classe, timer, caixa);
+        }
+    }
 }
 
 static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
@@ -32,9 +29,9 @@ static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
         return;
     }
 
-    if (novo->conta < (*raiz)->conta) {
+    if (novo->conta_id < (*raiz)->conta_id) {
         inserir_no(&(*raiz)->esq, novo);
-    } else if (novo->conta > (*raiz)->conta) {
+    } else if (novo->conta_id > (*raiz)->conta_id) {
         inserir_no(&(*raiz)->dir, novo);
     }
 }
@@ -82,8 +79,8 @@ static void percorrer_por_classe( //função auxiliar para percorrer a árvore b
 
     percorrer_por_classe(raiz->esq, classe, soma, contagem);
 
-    if (raiz->classe == classe) {
-        *soma += raiz->tempo;
+    if (raiz->classe_id == classe) {
+        *soma += raiz->tempo_id;
         (*contagem)++;
     }
 
