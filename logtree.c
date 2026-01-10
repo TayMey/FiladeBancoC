@@ -5,6 +5,19 @@ void log_inicializar(Log **l) { //função para criar arvóre binária
     *l = NULL;
 }
 
+static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
+    if (*raiz == NULL) {
+        *raiz = novo;
+        return;
+    }
+
+    if (novo->conta_id < (*raiz)->conta_id) {
+        inserir_no(&(*raiz)->esq, novo);
+    } else if (novo->conta_id > (*raiz)->conta_id) {
+        inserir_no(&(*raiz)->dir, novo);
+    }
+}
+
 void log_registrar(Log **l, int conta, int classe, int timer, int caixa) {
     if (*l == NULL) {
         *l = (Log*) malloc(sizeof(Log));
@@ -23,17 +36,24 @@ void log_registrar(Log **l, int conta, int classe, int timer, int caixa) {
     }
 }
 
-static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
-    if (*raiz == NULL) {
-        *raiz = novo;
+
+static void percorrer_por_classe( //função auxiliar para percorrer a árvore binária
+    Log *raiz,
+    int classe,
+    int *soma,
+    int *contagem
+) {
+    if (raiz == NULL)
         return;
+
+    percorrer_por_classe(raiz->esq, classe, soma, contagem);
+
+    if (raiz->classe_id == classe) {
+        *soma += raiz->tempo_id;
+        (*contagem)++;
     }
 
-    if (novo->conta_id < (*raiz)->conta_id) {
-        inserir_no(&(*raiz)->esq, novo);
-    } else if (novo->conta_id > (*raiz)->conta_id) {
-        inserir_no(&(*raiz)->dir, novo);
-    }
+    percorrer_por_classe(raiz->dir, classe, soma, contagem);
 }
 
 
@@ -65,24 +85,4 @@ float log_media_por_classe(Log **l, int classe) { //print para falara media do t
         return 0.0f;
 
     return (float)soma / contagem;
-}
-
-
-static void percorrer_por_classe( //função auxiliar para percorrer a árvore binária
-    Log *raiz,
-    int classe,
-    int *soma,
-    int *contagem
-) {
-    if (raiz == NULL)
-        return;
-
-    percorrer_por_classe(raiz->esq, classe, soma, contagem);
-
-    if (raiz->classe_id == classe) {
-        *soma += raiz->tempo_id;
-        (*contagem)++;
-    }
-
-    percorrer_por_classe(raiz->dir, classe, soma, contagem);
 }
