@@ -2,15 +2,15 @@
 #define FILA_FIFO_H
 
 typedef struct No {
-    int numero_conta;      // Chave de indexação (Ex: Número da conta)
-    int Quantidade_operacao;      // Informação armazenada (Ex: Quantidade de operações ou ID)
+    int numero_conta;      
+    int Quantidade_operacao;   
     struct No *prox;
 } No;
 
 typedef struct {
     No *inicio;
     No *fim;
-    int qtde;       // Opcional, mas recomendado para retornar f_num_elementos rapidamente
+    int qtde;  
 } Fila_FIFO;
 
 void f_inicializar(Fila_FIFO **f);
