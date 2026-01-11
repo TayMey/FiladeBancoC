@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include "logtree.h"
 
-void log_inicializar(Log **l) { //função para criar arvóre binária
+void log_inicializar(Log **l) { /* função para criar arvóre binária */
     *l = NULL;
 }
 
-static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
+static void inserir_no(Log **raiz, Log *novo) { /* função auxiliar do registrar */
     if (*raiz == NULL) {
         *raiz = novo;
         return;
@@ -21,10 +21,10 @@ static void inserir_no(Log **raiz, Log *novo) { //função auxiliar do registrar
 void log_registrar(Log **l, int conta, int classe, int timer, int caixa) {
     if (*l == NULL) {
         *l = (Log*) malloc(sizeof(Log));
-        (*l)->conta_id = conta;    // Nome exato do .h
-        (*l)->classe_id = classe;  // Nome exato do .h
-        (*l)->tempo_id = timer;    // Nome exato do .h
-        (*l)->caixa_id = caixa;    // Nome exato do .h
+        (*l)->conta_id = conta;    /* Nome exato do .h */
+        (*l)->classe_id = classe;  /* Nome exato do .h */
+        (*l)->tempo_id = timer;    /* Nome exato do .h */
+        (*l)->caixa_id = caixa;    /* Nome exato do .h */
         (*l)->esq = NULL;
         (*l)->dir = NULL;
     } else {
@@ -37,7 +37,7 @@ void log_registrar(Log **l, int conta, int classe, int timer, int caixa) {
 }
 
 
-static void percorrer_por_classe( //função auxiliar para percorrer a árvore binária
+static void percorrer_por_classe( /* função auxiliar para percorrer a árvore binária */
     Log *raiz,
     int classe,
     int *soma,
@@ -57,7 +57,7 @@ static void percorrer_por_classe( //função auxiliar para percorrer a árvore b
 }
 
 
-int log_obter_soma_por_classe(Log **l, int classe) { //função de somar de tempo por blasse
+int log_obter_soma_por_classe(Log **l, int classe) { /* função de somar de tempo por blasse */
     int soma = 0;
     int contagem = 0;
 
@@ -66,7 +66,7 @@ int log_obter_soma_por_classe(Log **l, int classe) { //função de somar de temp
     return soma;
 }
 
-int log_obter_contagem_por_classe(Log **l, int classe) { //função que fala quantos clientes da classe existem
+int log_obter_contagem_por_classe(Log **l, int classe) { /* função que fala quantos clientes da classe existem */
     int soma = 0;
     int contagem = 0;
 
@@ -75,7 +75,7 @@ int log_obter_contagem_por_classe(Log **l, int classe) { //função que fala qua
     return contagem;
 }
 
-float log_media_por_classe(Log **l, int classe) { //print para falara media do tempo por classe
+float log_media_por_classe(Log **l, int classe) { /* print para falara media do tempo por classe */
     int soma = 0;
     int contagem = 0;
 
